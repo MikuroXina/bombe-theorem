@@ -1,76 +1,38 @@
 import Mathlib.Data.Set.Basic
+import Mathlib.Data.Nat.Basic
+import Mathlib.Data.Nat.Order.Lemmas
+import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Finset.Card
+import Mathlib.Data.Finset.Defs
+import Mathlib.Data.Fintype.Basic
+import Mathlib.Data.Fintype.Card
+import Mathlib.Data.Fintype.Defs
+import Mathlib.Data.Fintype.EquivFin
+import Mathlib.Data.Fintype.Sets
+import Mathlib.Logic.Equiv.Basic
+import Mathlib.Logic.Equiv.Defs
 
 namespace Bombe
 
-open Set
-open Finset
+variable (Cell : Type)
 
-variable {U : Type} {region : Finset U} (b : ℕ)
+/-- The proposition that there are `n` bombs. `R` is a region of cells, `B` is a bomb assignment. -/
+def bombs_in (R : Finset Cell) (B : Finset Cell) (n : Nat) : Prop :=
+  B ⊆ R ∧ ∃ f : B → Fin n, Function.Bijective f
 
 -- Hints
 
-/-- The proposition that there are exact `b` bombs in the region. -/
-def hint_exact : Prop :=
-  ∀ bombs ⊆ region,
-  bombs.card = b
+def HintConstraint := Nat → Prop
 
-/-- The proposition that there are exact or over `b` bombs in the region. -/
-def hint_exact_over : Prop :=
-  ∀ bombs ⊆ region,
-  bombs.card ≥ b
-
-/-- The proposition that there are exact or less `b` bombs in the region. -/
-def hint_exact_less : Prop :=
-  ∀ bombs ⊆ region,
-  bombs.card ≤ b
-
-/-- The proposition that there are not `b` bombs in the region. -/
-def hint_not : Prop :=
-  ∀ bombs ⊆ region,
-  bombs.card ≠ b
-
-/-- The proposition that there are `b` or `b + 1` bombs in the region. -/
-def hint_choice01 : Prop :=
-  ∀ bombs ⊆ region,
-  bombs.card = b ∨ bombs.card = (b + 1)
-
-/-- The proposition that there are `b` or `b + 2` bombs in the region. -/
-def hint_choice02 : Prop :=
-  ∀ bombs ⊆ region,
-  bombs.card = b ∨ bombs.card = (b + 2)
-
-/-- The proposition that there are `b` or `b + 3` bombs in the region. -/
-def hint_choice03 : Prop :=
-  ∀ bombs ⊆ region,
-  bombs.card = b ∨ bombs.card = (b + 3)
-
-/-- The proposition that there are `b`, `b + 1` or `b + 2` bombs in the region. -/
-def hint_choice012 : Prop :=
-  ∀ bombs ⊆ region,
-  bombs.card = b ∨ bombs.card = (b + 1) ∨ bombs.card = (b + 2)
-
-/-- The proposition that there are `b`, `b + 2` or `b + 4` bombs in the region. -/
-def hint_choice024 : Prop :=
-  ∀ bombs ⊆ region,
-  bombs.card = b ∨ bombs.card = (b + 2) ∨ bombs.card = (b + 4)
-
-/-- The proposition that there are `b + 2n` (`n` is a natural number) bombs in the region. -/
-def hint_multiple2 : Prop :=
-  ∀ bombs ⊆ region,
-  ∃ n : ℕ, bombs.card = b + 2 * n
-
--- Custom operators
-
-postfix:100 "=" => hint_exact
-postfix:100 "+" => hint_exact_over
-postfix:100 "-" => hint_exact_less
-postfix:100 "!" => hint_not
-postfix:100 "/+1" => hint_choice01
-postfix:100 "/+2" => hint_choice02
-postfix:100 "/+3" => hint_choice03
-postfix:100 "/+1/+2" => hint_choice012
-postfix:100 "/+2/+4" => hint_choice024
-postfix:100 "+2*" => hint_multiple2
+def H_exact (n : Nat) : HintConstraint := fun k => k = n
+def H_ge (n : Nat) : HintConstraint := fun k => k ≥ n
+def H_le (n : Nat) : HintConstraint := fun k => k ≤ n
+def H_ne (n : Nat) : HintConstraint := fun k => k ≠ n
+def H_choice01 (n : Nat) : HintConstraint := fun k => k = n ∨ k = n + 1
+def H_choice02 (n : Nat) : HintConstraint := fun k => k = n ∨ k = n + 2
+def H_choice03 (n : Nat) : HintConstraint := fun k => k = n ∨ k = n + 3
+def H_choice012 (n : Nat) : HintConstraint := fun k => k = n ∨ k = n + 1 ∨ k = n + 2
+def H_choice024 (n : Nat) : HintConstraint := fun k => k = n ∨ k = n + 3 ∨ k = n + 4
+def H_mod2 (n : Nat) : HintConstraint := fun k => (k - n) % 2 = 0
 
 end Bombe
