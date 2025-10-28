@@ -14,7 +14,9 @@ import Mathlib.Logic.Equiv.Defs
 
 namespace Bombe
 
-variable (Cell : Type) (R : Finset Cell) (n : Nat)
+def Cell := Nat
+
+variable (R : Finset Cell) (n : Nat)
 
 /-- The proposition that there are `b` bombs in a region of cells `R`. -/
 def bombs_in (R : Finset Cell) (b : Nat) : Prop :=
@@ -23,24 +25,24 @@ def bombs_in (R : Finset Cell) (b : Nat) : Prop :=
 -- Hints
 
 def H_exact : Prop :=
-  ∃ b, bombs_in Cell R b ∧ b = n
+  ∃ b, bombs_in R b ∧ b = n
 def H_ge : Prop :=
-  ∃ b, bombs_in Cell R b ∧ b ≥ n
+  ∃ b, bombs_in R b ∧ b ≥ n
 def H_le : Prop :=
-  ∃ b, bombs_in Cell R b ∧ b ≤ n
+  ∃ b, bombs_in R b ∧ b ≤ n
 def H_ne : Prop :=
-  ∃ b, bombs_in Cell R b ∧ b ≠ n
+  ∃ b, bombs_in R b ∧ b ≠ n
 def H_choice01 : Prop :=
-  ∃ b, bombs_in Cell R b ∧ (b = n ∨ b = n + 1)
+  ∃ b, bombs_in R b ∧ (b = n ∨ b = n + 1)
 def H_choice02 : Prop :=
-  ∃ b, bombs_in Cell R b ∧ (b = n ∨ b = n + 2)
+  ∃ b, bombs_in R b ∧ (b = n ∨ b = n + 2)
 def H_choice03 : Prop :=
-  ∃ b, bombs_in Cell R b ∧ (b = n ∨ b = n + 3)
+  ∃ b, bombs_in R b ∧ (b = n ∨ b = n + 3)
 def H_choice012 : Prop :=
-  ∃ b, bombs_in Cell R b ∧ (b = n ∨ b = n + 1 ∨ b = n + 2)
+  ∃ b, bombs_in R b ∧ (b = n ∨ b = n + 1 ∨ b = n + 2)
 def H_choice024 : Prop :=
-  ∃ b, bombs_in Cell R b ∧ (b = n ∨ b = n + 3 ∨ b = n + 4)
+  ∃ b, bombs_in R b ∧ (b = n ∨ b = n + 3 ∨ b = n + 4)
 def H_mod2 : Prop :=
-  ∃ b, bombs_in Cell R b ∧ (b - n) % 2 = 0
+  ∃ b, bombs_in R b ∧ (b - n) % 2 = 0
 
 end Bombe

@@ -6,10 +6,8 @@ import BombeTheorem.Basic
 open Finset
 open Bombe
 
-variable (Cell : Type)
-
 /-- 0! は 1+ に等しい. -/
-theorem zero_not_eq_is_one_ge (A : Finset Cell) : H_ne Cell A 0 ↔ H_ge Cell A 1 := by
+theorem zero_not_eq_is_one_ge (A : Finset Cell) : H_ne A 0 ↔ H_ge A 1 := by
   unfold H_ne H_ge
   constructor
   · intro h
