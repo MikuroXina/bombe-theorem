@@ -1,30 +1,19 @@
-import Mathlib.Data.Set.Basic
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Order.Lemmas
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Finset.Defs
-import Mathlib.Data.Fintype.Basic
-import Mathlib.Data.Fintype.Card
-import Mathlib.Data.Fintype.Defs
-import Mathlib.Data.Fintype.EquivFin
-import Mathlib.Data.Fintype.Sets
-import Mathlib.Logic.Equiv.Basic
-import Mathlib.Logic.Equiv.Defs
+import Mathlib.Data.Multiset.Basic
+import Mathlib.Data.Multiset.Filter
 
 namespace Bombe
 
-open Finset
+open Multiset
 
 inductive Cell where
   | empty
   | bomb
 deriving Repr, DecidableEq
 
-abbrev Region := Finset Cell
+abbrev Region := Multiset Cell
 
-def area (r : Region) : Nat :=  #r
-def bombs (r : Region) : Nat := #(r.filter (fun c => c = Cell.bomb))
+def area (r : Region) : Nat := r.card
+def bombs (r : Region) : Nat := (r.filter (fun c => c = Cell.bomb)).card
 
 abbrev Clean (r : Region) : Prop := area r = 0
 abbrev Flag (r : Region) : Prop := area r = bombs r
