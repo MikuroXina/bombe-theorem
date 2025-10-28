@@ -16,54 +16,65 @@ namespace Bombe
 
 open Finset
 
-abbrev Cell := Nat
+inductive Cell where
+  | empty
+  | bomb
+deriving Repr, DecidableEq
 
-variable (R : Finset Cell) (n : Nat)
+abbrev Region := Finset Cell
+
+def area (r : Region) : Nat :=  #r
+def bombs (r : Region) : Nat := #(r.filter (fun c => c = Cell.bomb))
+
+abbrev Clean (r : Region) : Prop := area r = 0
+abbrev Flag (r : Region) : Prop := area r = bombs r
+
+variable (r : Region) (n : Nat)
 
 -- Areas
 
 def A_exact : Prop :=
-  #R = n
+  area r = n
 def A_ge : Prop :=
-  #R ≥ n
+  area r ≥ n
 def A_le : Prop :=
-  #R ≤ n
+  area r ≤ n
 def A_ne : Prop :=
-  #R ≠ n
+  area r ≠ n
 def A_choice01 : Prop :=
-  (#R = n ∨ #R = n + 1)
+  (area r = n ∨ area r = n + 1)
 def A_choice02 : Prop :=
-  (#R = n ∨ #R = n + 2)
+  (area r = n ∨ area r = n + 2)
 def A_choice03 : Prop :=
-  (#R = n ∨ #R = n + 3)
+  (area r = n ∨ area r = n + 3)
 def A_choice012 : Prop :=
-  (#R = n ∨ #R = n + 1 ∨ #R = n + 2)
+  (area r = n ∨ area r = n + 1 ∨ area r = n + 2)
 def A_choice024 : Prop :=
-  (#R = n ∨ #R = n + 3 ∨ #R = n + 4)
+  (area r = n ∨ area r = n + 3 ∨ area r = n + 4)
 def A_mod2 : Prop :=
-  (#R - n) % 2 = 0
+  (area r - n) % 2 = 0
 
 -- Hints
 
 def H_exact : Prop :=
-  ∃ B ⊆ R, #B = n
+  bombs r = n
 def H_ge : Prop :=
-  ∃ B ⊆ R, #B ≥ n
+  bombs r ≥ n
 def H_le : Prop :=
-  ∃ B ⊆ R, #B ≤ n
+  bombs r ≤ n
 def H_ne : Prop :=
-  ∃ B ⊆ R, #B ≠ n
+  bombs r ≠ n
 def H_choice01 : Prop :=
-  ∃ B ⊆ R, #B = n ∨ #B = n + 1
+  bombs r = n ∨ bombs r = n + 1
 def H_choice02 : Prop :=
-  ∃ B ⊆ R, #B = n ∨ #B = n + 2
+  bombs r = n ∨ bombs r = n + 2
 def H_choice03 : Prop :=
-  ∃ B ⊆ R, #B = n ∨ #B = n + 3
+  bombs r = n ∨ bombs r = n + 3
 def H_choice012 : Prop :=
-  ∃ B ⊆ R, #B = n ∨ #B = n + 1 ∨ #B = n + 2
+  bombs r = n ∨ bombs r = n + 1 ∨ bombs r = n + 2
 def H_choice024 : Prop :=
-  ∃ B ⊆ R, #B = n ∨ #B = n + 2 ∨ #B = n + 4
+  bombs r = n ∨ bombs r = n + 2 ∨ bombs r = n + 4
 def H_mod2 : Prop :=
-  ∃ B ⊆ R, (#B - n) % 2 = 0
+  (bombs r - n) % 2 = 0
 
 end Bombe
