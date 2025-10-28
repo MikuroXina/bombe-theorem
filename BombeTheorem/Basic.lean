@@ -14,7 +14,7 @@ import Mathlib.Logic.Equiv.Defs
 
 namespace Bombe
 
-def Cell := Nat
+abbrev Cell := Nat
 
 variable (R : Finset Cell) (n : Nat)
 
