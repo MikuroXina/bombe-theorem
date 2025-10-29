@@ -12,13 +12,16 @@ inductive Cell where
   | bomb
 deriving Repr, DecidableEq
 
-abbrev Region := Σ (D : Finset Nat), D → Cell
+def Region := Σ (D : Finset Nat), D → Cell
 
 def area (r : Region) : Nat := r.fst.card
 def bombs (r : Region) : Nat := (r.fst.attach.filter fun n => r.snd n = Cell.bomb).card
 
 abbrev Clean (r : Region) : Prop := bombs r = 0
 abbrev Flag (r : Region) : Prop := bombs r = area r
+
+instance : HasSubset Region where
+  Subset s t := s.fst ⊆ t.fst
 
 variable (r : Region) (n : Nat)
 
