@@ -15,8 +15,8 @@ abbrev Region := Multiset Cell
 def area (r : Region) : Nat := r.card
 def bombs (r : Region) : Nat := (r.filter (fun c => c = Cell.bomb)).card
 
-abbrev Clean (r : Region) : Prop := area r = 0
-abbrev Flag (r : Region) : Prop := area r = bombs r
+abbrev Clean (r : Region) : Prop := bombs r = 0
+abbrev Flag (r : Region) : Prop := bombs r = area r
 
 variable (r : Region) (n : Nat)
 
